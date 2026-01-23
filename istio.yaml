@@ -1,0 +1,16 @@
+apiVersion: extensions.istio.io/v1alpha1
+kind: WasmPlugin
+metadata:
+  name: test-wasm-plugin
+  namespace: istio-ingress
+spec:
+  selector:
+    matchLabels:
+      gateway.networking.k8s.io/gateway-name: http-gateway-netbird
+  url: oci://ghcr.io/konstfish/oauth-redirect-wasm:0.1.0
+  imagePullPolicy: Always
+  #imagePullSecret: private-registry-pull-secret
+  phase: AUTHN
+  pluginConfig:
+    header_content: asdfasdfasdfasdfasdfsfasdf
+    test2: testvalue2
