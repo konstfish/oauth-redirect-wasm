@@ -1,0 +1,11 @@
+FROM rust:1.93.0-slim-bullseye AS builder
+
+WORKDIR /opt
+
+COPY . .
+
+RUN rustup target add wasm32-wasip1 && \
+    cargo build --release --target wasm32-wasip1
+
+FROM scratch
+COPY --from=builder /opt/target/wasm32-wasip1/release/oauth_redirect_wasm.wasm ./plugin.wasm
