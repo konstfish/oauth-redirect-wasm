@@ -16,11 +16,14 @@ impl RootContext for OAuthRedirectRoot {
         info!("OAuthRedirectRoot::on_configure called");
 
         if let Some(config_bytes) = self.get_plugin_configuration() {
-            if let Ok(mut config) = serde_json::from_slice::<PluginConfig>(&config_bytes) {
-                config.init();
-                self.config = config;
-            } else {
-                info!("Failed to parse configuration, using defaults");
+            match serde_json::from_slice::<PluginConfig>(&config_bytes) {
+                Ok(mut config) => {
+                    config.init();
+                    self.config = config;
+                }
+                Err(e) => {
+                    info!("Failed to parse configuration: {}", e);
+                }
             }
         }
         true

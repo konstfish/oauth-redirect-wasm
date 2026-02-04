@@ -9,8 +9,10 @@ spec:
       gateway.networking.k8s.io/gateway-name: http-gateway-netbird
   url: oci://ghcr.io/konstfish/oauth-redirect-wasm:0.1.0
   imagePullPolicy: Always
-  #imagePullSecret: private-registry-pull-secret
   phase: AUTHN
   pluginConfig:
-    header_content: asdfasdfasdfasdfasdfsfasdf
-    test2: testvalue2
+    redirect_url: https://sso.barracuda.net.konst.fish/login
+    redirect_param: rd
+    add_redirect_param: true
+    redirect_hosts:
+      - localhost:10000

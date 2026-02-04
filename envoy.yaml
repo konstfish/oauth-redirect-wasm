@@ -38,7 +38,8 @@ static_resources:
                             {
                               "redirect_url": "https://sso.barracuda.net.konst.fish/login",
                               "redirect_param": "rd",
-                              "add_redirect_param": true
+                              "add_redirect_param": true,
+                              "redirect_hosts": ["localhost:10000"]
                             }
                         vm_config:
                           runtime: "envoy.wasm.runtime.v8"

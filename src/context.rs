@@ -3,7 +3,7 @@ use crate::config::PluginConfig;
 use proxy_wasm::traits::*;
 use proxy_wasm::types::*;
 
-use log::{debug};
+use log::{info, debug};
 
 use crate::jwt;
 
@@ -16,6 +16,14 @@ impl Context for OAuthRedirect {}
 
 impl HttpContext for OAuthRedirect {
     fn on_http_request_headers(&mut self, _: usize, _: bool) -> Action {
+        if self.config.contains_host(
+            &self.get_http_request_header(":authority").unwrap_or_default()
+        ) {
+            info!("#{} host is in redirect_hosts, skipping redirect logic", self.context_id);
+            return Action::Continue;
+        }
+
+
         let auth_token = self.get_http_request_header("cookie")
             .and_then(|c| {
                 c.split(';')
