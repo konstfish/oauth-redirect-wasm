@@ -36,8 +36,9 @@ static_resources:
                           "@type": type.googleapis.com/google.protobuf.StringValue
                           value: |
                             {
-                              "header_content": "testingstringasdf11",
-                              "test2": "test"
+                              "redirect_url": "https://sso.barracuda.net.konst.fish/login",
+                              "redirect_param": "rd",
+                              "add_redirect_param": true
                             }
                         vm_config:
                           runtime: "envoy.wasm.runtime.v8"
