@@ -16,13 +16,12 @@ impl Context for OAuthRedirect {}
 
 impl HttpContext for OAuthRedirect {
     fn on_http_request_headers(&mut self, _: usize, _: bool) -> Action {
-        if self.config.contains_host(
+        if !self.config.contains_host(
             &self.get_http_request_header(":authority").unwrap_or_default()
         ) {
-            info!("#{} host is in redirect_hosts, skipping redirect logic", self.context_id);
+            info!("#{} host is not in redirect_hosts, skipping redirect logic", self.context_id);
             return Action::Continue;
         }
-
 
         let auth_token = self.get_http_request_header("cookie")
             .and_then(|c| {
@@ -40,8 +39,8 @@ impl HttpContext for OAuthRedirect {
                 return Action::Continue;
             }
         }
-
-        let redirect = if self.config.add_redirect_param.unwrap_or(true) {
+                
+        let redirect: String = if self.config.add_redirect_param.unwrap_or(true) {
             let original_url = format!(
                 "{}://{}{}",
                 self.get_http_request_header(":scheme").unwrap_or_default(),
